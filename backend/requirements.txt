@@ -11,6 +11,6 @@ numpy
 python-multipart
 pypdf
 python-dotenv
-requests 
+requests
 groq
-numpy
+aiofiles

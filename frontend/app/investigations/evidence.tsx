@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Video, FileText, Shield, Network, AlertTriangle, Eye, Upload, FileCheck, MapPin, Clock } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 type Node = { id: string; label: string; type: string };
 type Edge = { from: string; to: string; label: string };
 
@@ -22,7 +24,7 @@ export default function EvidencePage() {
     fd.append("cctv_video", e.target.video.files[0]);
     if (e.target.suspect?.files?.length > 0) fd.append("criminal_img", e.target.suspect.files[0]);
 
-    const res = await fetch("http://localhost:8000/analyze/", {
+    const res = await fetch(`${API_URL}/analyze/`, {
       method: "POST",
       body: fd,
     });
@@ -52,7 +54,7 @@ export default function EvidencePage() {
     fd.append("files", files[i]); 
   };
 
-    const r1 = await fetch("http://localhost:8000/analyze/text", {
+    const r1 = await fetch(`${API_URL}/analyze/text`, {
       method: "POST",
       body: fd,
     });
@@ -63,9 +65,9 @@ export default function EvidencePage() {
       return;
     }
 
-    await fetch("http://localhost:8000/analyze/graph");
+    await fetch(`${API_URL}/analyze/graph`);
 
-    const g = await fetch("http://localhost:8000/analyze/case-graph/");
+    const g = await fetch(`${API_URL}/analyze/case-graph/`);
     const gd = await g.json();
 
     setGraphData({
@@ -202,7 +204,7 @@ export default function EvidencePage() {
                           className="group relative aspect-video bg-gray-200 rounded-lg overflow-hidden border-2 border-gray-300 hover:border-blue-500 transition-all shadow-sm hover:shadow-md"
                         >
                           <img
-                            src={`http://localhost:8000/evidence/${img}`}
+                            src={`${API_URL}/evidence/${img}`}
                             className="w-full h-full object-cover"
                             alt={`Evidence ${i + 1}`}
                           />

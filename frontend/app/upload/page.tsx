@@ -53,8 +53,8 @@ export default function FIRUploadPage() {
     });
 
     try {
-      // Corrected URL based on your previous success
-      const response = await fetch("http://localhost:8000/documents/", {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${API_URL}/documents/`, {
         method: "POST",
         body: formData,
       });

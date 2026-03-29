@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -25,20 +26,20 @@ from backend.yolo_detection import model # <--- This imports your model.py
 
 app = FastAPI(title="SafeCity Backend")
 app.include_router(fir_pipeline.router, prefix="/fir")
-# --- FIX START: Mount the Evidence folder here ---
-# This tells the main app: "When you get a request for /evidence/image.jpg, 
-# look inside the folder defined in model.EVIDENCE_DIR"
+# Ensure evidence dir exists before mounting (required on Render's ephemeral filesystem)
+os.makedirs(model.EVIDENCE_DIR, exist_ok=True)
 app.mount("/evidence", StaticFiles(directory=model.EVIDENCE_DIR), name="evidence")
-# --- FIX END ---
 
 
 
+# After deploying to Vercel, replace "*" with your actual Vercel URL, e.g.:
+# allow_origins=["https://nyayarakshak.vercel.app", "http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  
-    allow_headers=["*"],  
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Keep your existing router include (this handles the POST requests)

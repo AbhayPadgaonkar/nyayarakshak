@@ -103,10 +103,11 @@ export default function TrafficDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
   // --- FETCH DATA ---
   useEffect(() => {
-    // Note: Assuming same endpoint as before, or your dashboard endpoint
-    fetch("http://localhost:8000/law-order/dashboard") 
+    fetch(`${API_URL}/law-order/dashboard`)
       .then((r) => r.json())
       .then((d) => {
         // Handle both data structures (direct list or dashboard wrapper)

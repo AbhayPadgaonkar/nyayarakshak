@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 screenshots
 yolov8n.pt
+backend/.env
+frontend/.env.local
